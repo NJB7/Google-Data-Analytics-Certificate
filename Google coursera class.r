@@ -9,6 +9,8 @@ library(pacman) # no message
 detach("package:library") # disconnect from library
 p_unload(all) # clears all add-ons OR:
 detach("package:datasets", unload = TRUE)
+bookings_df <- read_csv("/Users/nicol/R_data/hotel_bookings.csv") #reassign path from the defaul /Users/nicol/...csv
+
 
 library(datasets)
 head(iris)
@@ -310,3 +312,48 @@ rename_with(penguins, toupper)
 rename_with(penguins, tolower)
 clean_names(penguins)
 detach("package:palmerpenguins", unload = TRUE)
+
+penguins %>% arrange(bill_length_mm)
+penguins %>% arrange(-bill_length_mm)
+penguins_sorted <- penguins %>% arrange(bill_length_mm)
+view(penguins_sorted)
+penguins %>% 
+    group_by(island) %>% 
+    drop_na() %>% 
+    summarize(mean_bill_length_mm = mean(bill_length_mm))
+penguins %>%
+    group_by(island) %>%
+    drop_na() %>%
+    summarize(max_bill_length_mm = max(bill_length_mm))
+penguins %>%
+    group_by(species, island) %>%
+    drop_na() %>%
+    summarize(max_bill_length_mm = max(bill_length_mm), mean_bill_length_mm = mean(bill_length_mm))
+penguins %>%
+    filter(species == "Adelie")
+
+library(tidyverse)
+library(skimr)
+library(janitor)
+bookings_df <- read_csv("/Users/nicol/R_data/hotel_bookings.csv") # reassign path from the defaul /Users/nicol/...csv
+head(bookings_df)
+colnames(bookings_df)
+trimmed_df <- bookings_df %>% 
+    select(hotel, is_canceled, lead_time)
+trimmed_df %>%
+    select(hotel, is_canceled, lead_time) %>%
+    rename(hotel_type = hotel)
+example_df <- bookings_df %>%
+    select(arrival_date_year, arrival_date_month) %>%
+    unite(arrival_month_year, c("arrival_date_month", "arrival_date_year"), sep = " ")
+head(example_df)
+example_df <- bookings_df %>%
+    mutate(guests = adults + children + babies)
+    select(hotel, guests)
+view(example_df)
+example_df <- bookings_df %>%
+    summarize(
+        number_canceled = sum(is_canceled),
+        average_lead_time = mean(lead_time)
+    )
+head(example_df)
