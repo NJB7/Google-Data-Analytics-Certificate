@@ -357,3 +357,77 @@ example_df <- bookings_df %>%
         average_lead_time = mean(lead_time)
     )
 head(example_df)
+
+id <- c(1:10)
+name <- c("John Mendes", "Rob Stewart", "Rachel Abrahamson", "Christy Hickman", "Johnson Harper", "Candace Miller", "Carlson Landy", "Pansy Jordan", "Darius Berry", "Claudia Garcia")
+job_title <- c("Professional", "Programmer", "Management", "Clerical", "Developer", "Programmer", "Management", "Clerical", "Developer", "Programmer")
+employee <- data.frame(id, name, job_title)
+print(employee)
+view(employee)
+employee_new <- separate(employee,name, into = c("first_name", "last_name"), sep = " ")
+print(employee_new)
+unite(employee_new, "name", first_name, last_name, sep = " ")
+
+view(penguins)
+view(penguins %>%
+    mutate(body_mass_kg = body_mass_g / 1000,
+    flipper_length_m = flipper_length_mm / 100))
+
+pivot_wider() #functions to experiment with:
+pivot_longer()
+clean_names() #to ensure unique names with only letters, numbers & _
+rename()
+arrange()
+summarize()
+sample()
+
+install.packages("Tmisc")
+library(Tmisc)
+data(quartet)
+view(quartet)
+view(quartet %>%
+    group_by(set) %>%
+    summarize(mean(x), sd(x), mean(y), sd(y), cor(x,y)))
+ggplot(quartet, aes(x,y)) + 
+    geom_point() + 
+    geom_smooth(method = lm, se = FALSE) + 
+    facet_wrap(quartet$set)
+
+install.packages("datasauRus")
+library(datasauRus)
+ggplot(datasaurus_dozen, aes(x = x, y = y, colour = dataset)) +
+    geom_point() +
+    theme_void() +
+    theme(legend.position = "none") +
+    facet_wrap(~dataset)
+
+install.packages("SimDesign")
+library(SimDesign)
+actual_temp <- c(68.3, 70, 72.4, 71, 67, 70)
+predicted_temp <- c(67.9, 69, 71.5, 70, 67, 69)
+bias(actual_temp, predicted_temp) #should be close to zero
+
+library(tidyverse)
+library(skimr)
+library(janitor)
+hotel_bookings <- read_csv("/Users/nicol/R_data/hotel_bookings.csv") # reassign path from the defaul /Users/nicol/...csv
+head(hotel_bookings)
+str(hotel_bookings)
+glimpse(hotel_bookings)
+colnames(hotel_bookings)
+view(arrange(hotel_bookings, lead_time))
+min(hotel_bookings$lead_time)
+mean(hotel_bookings$lead_time)
+hotel_bookings_city <-
+    filter(hotel_bookings, hotel_bookings$hotel == "City Hotel")
+view(hotel_bookings_city)
+mean(hotel_bookings_city$lead_time)
+hotel_summary <-
+    hotel_bookings %>%
+    group_by(hotel) %>%
+    summarise(
+        average_lead_time = mean(lead_time),
+        min_lead_time = min(lead_time),
+        max_lead_time = max(lead_time)
+    )
+view(hotel_summary)
