@@ -10,7 +10,8 @@ detach("package:library") # disconnect from library
 p_unload(all) # clears all add-ons OR:
 detach("package:datasets", unload = TRUE)
 bookings_df <- read_csv("/Users/nicol/R_data/hotel_bookings.csv") #reassign path from the defaul /Users/nicol/...csv
-
+?detach() #use a ? before a function to bring up help article
+ggsave("Three Penguin Species.png") #saves last plot to current open folder
 
 library(datasets)
 head(iris)
@@ -377,7 +378,7 @@ pivot_wider() #functions to experiment with:
 pivot_longer()
 clean_names() #to ensure unique names with only letters, numbers & _
 rename()
-arrange()
+?arrange()
 summarize()
 sample()
 
@@ -431,3 +432,139 @@ hotel_summary <-
         max_lead_time = max(lead_time)
     )
 view(hotel_summary)
+
+library(ggplot2) 
+library(palmerpenguins)
+data(penguins)
+view(penguins)
+ggplot(data = penguins) +
+    geom_point(mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species))
+ggplot(data = penguins, mapping = aes(x = flipper_length_mm, y = body_mass_g, alpha = species)) +
+    geom_point(color = "purple")
+ggplot(data = penguins, mapping = aes(x = flipper_length_mm, y = body_mass_g, linetype = species)) +
+    geom_smooth(color = "purple") + geom_point(color = "purple")
+ggplot(data = penguins, mapping = aes(x = flipper_length_mm, y = body_mass_g, linetype = species)) +
+    geom_jitter(color = "purple")
+ggplot(data = penguins, mapping = aes(x = flipper_length_mm, y = body_mass_g, linetype = species)) +
+    geom_point(color = "purple")
+
+ggplot(data = diamonds, mapping = aes(x = cut)) +
+    geom_bar(color = "purple")
+ggplot(data = diamonds, mapping = aes(x = cut, fill = cut)) +
+    geom_bar()
+ggplot(data = diamonds, mapping = aes(x = cut, fill = clarity)) +
+    geom_bar()
+
+ggplot(data = penguins, mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
+    geom_point(color = "purple") +
+    geom_smooth(color = "purple", method="loess") +
+    facet_wrap(~species)
+
+ggplot(data = penguins, mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
+    geom_point(color = "purple") +
+    geom_smooth(color = "purple", method = "gam") +
+    facet_wrap(~species)
+
+ggplot(data = diamonds, mapping = aes(x = cut, fill = clarity)) +
+    geom_bar() +
+    facet_wrap(~cut)
+
+ggplot(data = diamonds, mapping = aes(x = color, fill = cut)) +
+    geom_bar() +
+    facet_wrap(~cut)
+
+ggplot(data = penguins, mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+    geom_point() +
+    facet_wrap(~species)
+    
+ggplot(data = penguins, mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+    geom_point() +
+    facet_wrap(sex~species)
+
+library(ggplot2)
+hotel_bookings <- read_csv("/Users/nicol/R_data/hotel_bookings.csv")
+colnames(hotel_bookings)
+ggplot(data = hotel_bookings) +
+    geom_bar(mapping = aes(x = distribution_channel))
+ggplot(data = hotel_bookings) +
+    geom_bar(mapping = aes(x = distribution_channel, fill = deposit_type))
+ggplot(data = hotel_bookings) +
+  geom_bar(mapping = aes(x = distribution_channel, fill=market_segment))
+ggplot(data = hotel_bookings) +
+    geom_bar(mapping = aes(x = distribution_channel, fill = market_segment))
+ggplot(data = hotel_bookings) +
+    geom_bar(mapping = aes(x = distribution_channel)) +
+    facet_wrap(~deposit_type)
+ggplot(data = hotel_bookings) +
+    geom_bar(mapping = aes(x = distribution_channel)) +
+    facet_wrap(~market_segment)
+ggplot(data = hotel_bookings) +
+    geom_bar(mapping = aes(x = distribution_channel)) +
+    facet_grid(~deposit_type)
+ggplot(data = hotel_bookings) +
+  geom_bar(mapping = aes(x = distribution_channel)) +
+  facet_wrap(~deposit_type~market_segment)
+
+ggplot(data = hotel_bookings) +
+    geom_point(mapping = aes(x = lead_time, y = children))
+ggplot(data = hotel_bookings) +
+    geom_bar(mapping = aes(x = hotel, fill = market_segment))
+ggplot(data = hotel_bookings) +
+    geom_bar(mapping = aes(x = hotel)) +
+    facet_wrap(~market_segment)
+
+library(tidyverse)
+library(ggplot2)
+hotel_bookings <- read_csv("/Users/nicol/R_data/hotel_bookings.csv")
+colnames(hotel_bookings)
+onlineta_city_hotels <- filter(
+    hotel_bookings, hotel == "City Hotel" & market_segment == "Online TA")
+View(onlineta_city_hotels)
+onlineta_city_hotels_v2 <- hotel_bookings %>%
+    filter(hotel == "City Hotel") %>%
+    filter(market_segment == "Online TA")
+View(onlineta_city_hotels_v2)
+ggplot(data = onlineta_city_hotels_v2) +
+    geom_point(mapping = aes(x = lead_time, y = children)) +
+    labs(title = "Hotel Lead Time")
+
+ggplot(data = hotel_bookings) +
+    geom_bar(mapping = aes(x = hotel, fill = market_segment)) +
+    labs(title = "Hotel Bookings by Hotel", subtitle = "and Market Segment", caption = "Data collected by...")
+
+ggplot(data = penguins, mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+    geom_jitter() +
+    labs(title = "Penguin flipper length vs. body mass", caption = "Data collected by Dr. Kristen Gorman") +
+    annotate("text", x = 220, y = 3500, label = "The Gentoos are the largest", color = "purple", size = 3.5, fontface = "bold", angle = 35)
+
+Penguin_variable <- ggplot(data = penguins, mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+    geom_jitter() +
+    labs(title = "Penguin flipper length vs. body mass", caption = "Data collected by Dr. Kristen Gorman")
+Penguin_variable + annotate("text", x = 220, y = 3500, label = "The Gentoos are the largest", color = "purple", size = 3.5, fontface = "bold", angle = 35)
+
+ggsave("Three Penguin Species.png")
+
+
+colnames(hotel_bookings)
+ggplot(data = hotel_bookings) +
+    geom_bar(mapping = aes(x = market_segment)) +
+    facet_wrap(~hotel)
+
+ggplot(data = hotel_bookings) +
+    geom_bar(mapping = aes(x = market_segment)) +
+    facet_wrap(~hotel) +
+    labs(title = "Comparison of market segments by hotel type for hotel bookings")
+mindate <- min(hotel_bookings$arrival_date_year)
+maxdate <- max(hotel_bookings$arrival_date_year)
+ggplot(data = hotel_bookings) +
+    geom_bar(mapping = aes(x = market_segment)) +
+    facet_wrap(~hotel) +
+    labs(title = "Comparison of market segments by hotel type for hotel bookings",
+        caption = paste0("Data from: ", mindate, " to ", maxdate),
+        x = "Market Segment",
+        y = "Number of Bookings")
+ggsave("hotel_booking_chart.png")
+ggsave("hotel_booking_chart2.png",
+    width = 16,
+    height = 8
+)
