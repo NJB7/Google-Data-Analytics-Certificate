@@ -1,0 +1,28 @@
+---
+title: "R_Markdown_Experiment 2"
+author: "Nicole Bergen"
+date: '2022-06-17'
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+## Setting up my environment...
+...by loading tidyverse & palmerpenguins
+press ctrl + alt + I
+
+```{r loading packages, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(palmerpenguins)
+```
+
+## Visualization
+This plots flipper length by body mass, by species.
+    
+```{r plot, message=FALSE, warning=FALSE}
+ggplot(data = penguins, mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
+    geom_point(color = "purple") +
+    geom_smooth(color = "purple", method="loess") +
+    facet_wrap(~species)
+
+```

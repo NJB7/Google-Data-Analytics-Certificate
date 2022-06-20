@@ -568,3 +568,7 @@ ggsave("hotel_booking_chart2.png",
     width = 16,
     height = 8
 )
+
+install.packages("rmarkdown")
+library(rmarkdown)
+
